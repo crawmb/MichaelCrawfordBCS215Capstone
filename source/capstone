@@ -1,3 +1,13 @@
+1a. My program is a patient directory that has many functions such as adding patients, deleting patients
+searching up patients by their last name, and compiling all of the added patients onto a file that stored 
+the information in which you were able to look up, add to, and delete from.
+1b. One issue with my program is that it makes a patient ID but only with the first letter of the patients last name and counter 
+is activated for patients with last names starting with the same letter and not the same name.
+
+
+
+
+
 #!/bin/bash
 #========================================================
 # Script Name: capstone
