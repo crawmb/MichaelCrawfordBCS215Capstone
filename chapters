@@ -1,0 +1,4 @@
+for file in chap[1234]; do
+more $file
+done
+

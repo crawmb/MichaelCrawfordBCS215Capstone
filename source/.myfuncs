@@ -1,0 +1,13 @@
+sort_name()
+{
+sort -k 2 -t: corp_phones
+}
+sort_job()
+{
+sort -k 6 -t: corp_phones
+}
+sort_dept()
+{
+sort -k 5 -t: corp_phones
+}
+

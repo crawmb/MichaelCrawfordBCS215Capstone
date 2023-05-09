@@ -1,0 +1,5 @@
+for USERS in john ellen tom becky eli jill 
+do
+echo $USERS
+done
+

@@ -1,0 +1,5 @@
+Although UNIX supports other databases systems,
+UNIX has never abandoned the idea of working with
+flat files. Flat files are those that are based on pure
+text with standard ASCII codes. Flat files
+can be read by any operating system.

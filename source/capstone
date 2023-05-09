@@ -1,0 +1,112 @@
+#!/bin/bash
+#========================================================
+# Script Name: capstone
+#========================================================
+generate_patient_id() {
+	lname=$(echo $2 | cut -c 1-4 | tr '[:lower:]' '[:upper:]')
+	fname=$(echo $1 | cut -c 1)
+	id="$lname$fname"
+
+	counter=2
+	while grep -q "^$id" patients.csv; do
+		id="$lname$fname$counter"
+		((counter++))
+	done
+
+	echo "$id"
+}
+
+
+
+phonefile=~/source/patients.csv
+loop=y
+while test $loop = "y"
+do 
+clear
+tput cup 3 12; echo "Welcome to the Patient Management System of Hospital X"
+read -r -s -p $'Press the Enter Key to continue...'
+clear || continue
+tput cup 3 12; echo "Hospital X Menu"
+tput cup 4 12; echo "==============="
+tput cup 6 9; echo "1. [L/l] List patients"
+tput cup 7 9; echo "2. [A/a] Add a new patient"
+tput cup 8 9; echo "3. [S/s] Search a patient"
+tput cup 9 9; echo "4. [D/d] Delete a patient"
+tput cup 10 9; echo "5. [E/e] Exit"
+read choice || continue
+case $choice in 
+	
+	[L/l]) clear
+		tput cup 2 20; echo "Hospital X Patients"
+		tput cup 3 20; echo "==================="
+		tput cup 5 0;
+		awk -F: ' {print $3, $2, $4, $1} ' patients.csv
+		tput cup 22 8; read prompt
+		;;
+
+		[A/a])
+	
+		trap "rm ~/tmp/* 2> /dev/null; exit" 0 1 2 3
+		phonefile=~/source/patients.csv
+		looptest=y
+		while [ $looptest = y ]
+		do
+	       	clear 
+		tput cup 1 4; echo "Patient Additions"
+		tput cup 2 4; echo "================="
+		tput cup 4 4; echo "Enter first name: "
+		tput cup 5 4; echo "Enter last name: "
+		tput cup 6 4; echo "Enter phone number: "
+		tput cup 4 22; read fname
+		tput cup 5 21; read lname 
+		tput cup 6 24; read phonenum
+
+		if [ "$lname" > "          " ]
+		then
+			
+			id=$(generate_patient_id "$lname") 
+			tput cup 10 4; echo "Thanks for entering the new patient information..."
+			tput cup 11 4; echo "The new Patient ID is $id"
+			echo "The new patient is added to the patient records."
+			echo "$id,$fname,$lname,$phonenum" >> $phonefile 
+		fi
+		tput cup 12 33; read looptest
+		if [ "$looptest" = "q" ]
+		then
+		clear; exit
+		fi
+	done
+	;;
+[S/s]) phonefile=~/source/patients.csv
+	clear
+	tput cup 5 1
+	echo "Enter last name to search for: "
+	tput cup 5 35
+	read lname
+	echo
+	grep -i $lname $phonefile | tr ',' ' '
+	echo 
+	echo "Press Enter to continue..."
+	read continue
+	;;
+[D/d])clear
+	tput cup 16 4; echo "Delete Patient Record"
+	tput cup 17 4; echo "Last name: "
+	tput cup 17 15; read lname
+	tput cup 18 4; echo "Accept? (y)es or (n)o: "
+	tput cup 18 27; read Accept
+	if test $Accept = "y"
+	then
+		sed /$lname/d $phonefile > f 
+		cp f $phonefile
+		rm f
+		echo "Patient deleted successfully"
+
+	fi 
+	;;
+[E/e])clear
+tput cup 1 4; echo "Thanks for using this app"
+read -r -s -p $'Press Enter Key to exit'
+       	exit
+esac
+done

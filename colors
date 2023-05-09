@@ -1,0 +1,6 @@
+echo -n "Try to guess my favorite color: "
+read guess
+while test $guess != "red" ; do
+ "No, not that one. Try again. "; read guess
+done
+
